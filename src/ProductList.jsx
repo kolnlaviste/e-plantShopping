@@ -245,12 +245,20 @@ const handlePlantsClick = (e) => {
     setShowCart(false); // Hide the cart when navigating to About Us
 };
 
-const handleAddToCart = (product) =>{
-    dispatch(addItem(product));
-    setAddedToCart((prevState) => ({
-        ...prevState,
-        [product.name]: true,
-    }));
+const handleAddToCart = (product) => {
+    if (product && product.name) {
+        const itemExists = cartItems.some((item) => item.name === product.name);
+
+        if (!itemExists) {
+            dispatch(addItem(product));
+            setAddedToCart((prevState) => ({
+                ...prevState,
+                [product.name]: true,
+            }));
+        }
+    } else {
+        console.error('Invalid product data:', product);
+    }
 };
    const handleContinueShopping = (e) => {
     e.preventDefault();
